@@ -91,7 +91,6 @@ class Language(object):
          - Tenseless lanagues are not considered here.
          - Here, tenses are only applied through endings, which is a very
            English-centric take - languages can mark this with additional words
-           or stem modification
          - This system means that verbs given without tense will not be in the
            same form as present tense
          - No account is taken here for pronoun accompanying the verb, which is
@@ -111,16 +110,11 @@ class Language(object):
 
 
     # -------- GENERATORS
-    def get_word(self, pos=None, english=None, definition=None):
+    def get_word(self, pos, english=None, definition=None):
         ''' combine syllables into words
-        if no part of speech is provided, one is picked at random,
-        which does not consider frequency of different parts of speech.
-        This also doesn't consider that some PoSs should probably
-        prefer shorter words.
-
-        This function creates the dictionary form of the word, and then
-        (at least in theory) produces the full set of lexemes based on
-        the generated inflection rules.
+        NOTES:
+        - some PoSs should probably prefer shorter words.
+        - doesn't consider portmanteau, blendwords, compounding, &c
         '''
 
         # check if the word already exists
@@ -164,37 +158,28 @@ class Language(object):
         return word_data
 
 
-    def get_placename(self, definition=None):
-        ''' a special case word generator for place names.
-        This allows for names with literal translations, in the form of:
-        adjective + noun (Swarming Bees),
-        or just a word
-        '''
-        if random.random() > 0.25:
-            # normal name
-            return self.get_word(pos='LOC', definition=definition)
-        else:
-            ''' Note: this is assuming the language uses a adj+noun
-            pattern, which there's no real reason to think '''
-            # TODO: this is no wordlist
-            english_adj = random.choice(['swarming', 'sleeping', 'many'])
-            english_noun = random.choice(['bees', 'wasps', 'locust', 'rats'])
+    def phrase(self, pos, words, english=None, definition=None):
+        ''' A constituent phrase with a distinct meaning or translation,
+        such as a place name like "Los Gatos" '''
+        if len(words) < 2:
+            raise IndexError('Phrases must be made of 2 or more words')
 
-            adj = self.get_word(pos='JJ', english=english_adj)
-            noun = self.get_word(pos='NN', english=english_noun)
-            # this applies any location rules to the phrase
-            definition += '; ' if definition else ''
-            definition += 'literally "%s %s"' % (english_adj, english_noun)
+        syllables = words[0].lemma
+        for word in words[1:]:
+            syllables += self.space + word.lemma
 
-            name = Word(
-                'LOC',
-                adj.lemma + self.space + noun.lemma,
-                definition=definition
-            )
-            name.set_lemma(self.rules)
+        phrase = Word(
+            pos,
+            syllables,
+            english=english,
+            definition=definition
+        )
+        phrase.set_lemma(self.rules)
 
-            self.dictionary_list.append(name)
-            return name
+        if english and not pos in ['NNP', 'LOC']:
+            self.dictionary[english+pos] = phrase
+        self.dictionary_list.append(phrase)
+        return phrase
 
 
     def about(self):
