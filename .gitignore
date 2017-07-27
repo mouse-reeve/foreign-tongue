@@ -1,5 +1,8 @@
 *.swp
 *.pyc
+*.egg-info
 venv/
+build/
+dist/
 app/settings.py
 __pycache__/
