@@ -158,7 +158,7 @@ class Language(object):
         return word_data
 
 
-    def phrase(self, pos, words, english=None, definition=None):
+    def get_phrase(self, pos, words, english=None, definition=None):
         ''' A constituent phrase with a distinct meaning or translation,
         such as a place name like "Los Gatos" '''
         if len(words) < 2:
