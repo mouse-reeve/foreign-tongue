@@ -10,7 +10,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='ForeignTongue',
-    version='0.0.1',
+    version='0.1.0',
 
     description='Generates new languages',
     long_description=long_description,
