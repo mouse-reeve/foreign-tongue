@@ -1,5 +1,6 @@
 ''' create syllables out of phonemes and probabalistic structure '''
-from foreigntongue.phonemes import vowels as ipa_vowels, consonants as ipa_consonants
+from foreigntongue.phonemes import vowels as ipa_vowels
+from foreigntongue.phonemes import consonants as ipa_consonants
 import random
 
 class Syllables(object):
@@ -21,14 +22,14 @@ class Syllables(object):
          '''
 
         # a phone looks like ['/m/', ['/m/']] -> [IPA, [transcription choices]]
-        v_count = int(random.normalvariate(5, 1)) or 2
+        v_count = int(random.normalvariate(5, 2)) + 3 or 2
         while 2 > v_count > len(ipa_vowels) - 2:
-            v_count = int(random.normalvariate(5, 1)) or 2
+            v_count = int(random.normalvariate(5, 2)) + 3 or 2
         vowels = random.sample(ipa_vowels, v_count)
 
-        c_count = int(random.normalvariate(22, 3)) or 3
+        c_count = int(random.normalvariate(22, 3)) or 6
         while 3 > c_count > len(ipa_consonants) - 3:
-            c_count = int(random.normalvariate(22, 3)) or 3
+            c_count = int(random.normalvariate(22, 3)) or 6
         consonants = random.sample(ipa_consonants, c_count)
 
         # assign them frequencies
