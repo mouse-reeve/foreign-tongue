@@ -66,8 +66,7 @@ class Language(object):
             # apply endings to ~half of POSs, excluding proper nouns,
             # because they make names too confusing
             if random.randint(0, 1) and tag != 'NNP':
-                continue
-            create_rule([tag])
+                create_rule([tag])
 
         # Plurals
         ''' plurals could also theoretically apply to adjectives, and
