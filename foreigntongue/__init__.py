@@ -198,6 +198,28 @@ class Language(object):
             return name
 
 
+    def about(self):
+        ''' print out some info about this language '''
+        vowels = self.syllables.vowels
+        consonants = self.syllables.consonants
+        print('ABOUT THIS LANGUAGE\n' \
+              'Vowels:                  %s\n' \
+              'Consonants:              %s\n' \
+              'Ave. syllables per word: %s' %
+              (len(vowels), len(consonants),
+               self.syllable_stats['word_syllable_mode']))
+
+        print('\nVOWELS:')
+        print(' '.join(re.sub('/', '', v['IPA']) for v in vowels))
+        print(' '.join(re.sub('/', '', v['latin']) for v in vowels))
+
+        print('CONSONANTS:')
+        print(' '.join(re.sub('/', '', v['IPA']) for v in consonants))
+        print(' '.join(re.sub('/', '', v['latin']) for v in consonants))
+
+        print('\nGRAMMAR:')
+        for rule in self.rules:
+            print(rule.tags, rule)
 
 # ------ PRINTERS
 def get_latin(word):
