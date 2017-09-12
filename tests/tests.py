@@ -59,12 +59,15 @@ class Tests(unittest.TestCase):
         self.assertTrue(len(syll.vowels) >= 2)
         self.assertTrue(len(syll.consonants) >= 6)
 
-        vowel = syll.pick_vowel()
-        self.assertIn(vowel, syll.vowels)
+        # make sure vowels and consonants actually are
+        for _ in range(10):
+            vowel = syll.pick_vowel()
+            self.assertIn(vowel, syll.vowels)
 
-        consonant = syll.pick_consonant()
-        self.assertIn(consonant, syll.consonants)
+            consonant = syll.pick_consonant()
+            self.assertIn(consonant, syll.consonants)
 
+        # make sure letters actually exist
         self.assertIsInstance(consonant, dict)
         self.assertIn('IPA', consonant)
         self.assertIn('latin', consonant)
@@ -86,8 +89,6 @@ class Tests(unittest.TestCase):
         self.assertIn('latin', syllable[0])
         self.assertIsInstance(syllable[0]['IPA'], str)
         self.assertIsInstance(syllable[0]['latin'], str)
-
-
 
 
 if __name__ == '__main__':

@@ -196,7 +196,6 @@ def get_latin(word):
     text = ''
     for syllable in word.lemma:
         text = text + ''.join(l['latin'] for l in syllable)
-
     return re.sub('/', '', text)
 
 def get_ipa(word):
