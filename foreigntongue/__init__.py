@@ -12,8 +12,6 @@ class Language(object):
 
     def __init__(self):
         self.dictionary = {}
-        # this will just be a list of all created words, unkeyed
-        self.dictionary_list = []
 
         # this selects phonemes and syllable formation patterns
         self.syllables = Syllables()
@@ -110,16 +108,17 @@ class Language(object):
 
 
     # -------- GENERATORS
-    def get_word(self, pos, english=None, definition=None):
+    def get_word(self, pos, translation):
         ''' combine syllables into words
         NOTES:
         - some PoSs should probably prefer shorter words.
         - doesn't consider portmanteau, blendwords, compounding, &c
+        - assumes that the string concatenation of translation and pos is unique
         '''
 
         # check if the word already exists
-        if pos and english and english+pos in self.dictionary:
-            return self.dictionary[english+pos]
+        if translation+pos in self.dictionary:
+            return self.dictionary[translation+pos]
 
         pos = pos if pos else random.choice(pos_list)
         tags = [pos]
@@ -136,29 +135,18 @@ class Language(object):
         word_data = Word(
             pos,
             data,
-            base_tags=tags,
-            english=english,
-            definition=definition
+            translation,
+            base_tags=tags
         )
 
         # inflect word based on its part of speech
         word_data.set_lemma(self.rules)
 
-        # location names and proper nouns won't necessarily have
-        # unique english equivalents, so they aren't
-        # added to the keyed dictionary, but they do need
-        # entries in the html.
-        if english and not pos in ['NNP', 'LOC']:
-            # it seems janky to maintain these in parallel, but they
-            # won't have exactly the same content
-            # using the definition/translation as a key means that
-            # english homonyms or words with multiple POSs are merged
-            self.dictionary[english+pos] = word_data
-        self.dictionary_list.append(word_data)
+        self.dictionary[translation+pos] = word_data
         return word_data
 
 
-    def get_phrase(self, pos, words, english=None, definition=None):
+    def get_phrase(self, pos, words, translation):
         ''' A constituent phrase with a distinct meaning or translation,
         such as a place name like "Los Gatos" '''
         if len(words) < 2:
@@ -171,14 +159,11 @@ class Language(object):
         phrase = Word(
             pos,
             syllables,
-            english=english,
-            definition=definition
+            translation
         )
         phrase.set_lemma(self.rules)
 
-        if english and not pos in ['NNP', 'LOC']:
-            self.dictionary[english+pos] = phrase
-        self.dictionary_list.append(phrase)
+        self.dictionary[translation+pos] = phrase
         return phrase
 
 

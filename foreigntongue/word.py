@@ -5,8 +5,7 @@ from foreigntongue.pos import pos_lookup
 class Word(object):
     ''' a foreign word and its metadata '''
 
-    def __init__(self, pos, syllables, base_tags=None,
-                 english=None, definition=None):
+    def __init__(self, pos, syllables, translation, base_tags=None):
         self.pos = pos
         self.display_pos = pos_lookup['LOC']
 
@@ -22,11 +21,8 @@ class Word(object):
         # we can't tell what the word actually looks like without grammar
         self.lemma = None
 
-        # equivalent english word, if available
-        self.english = english
-
-        # longer-form definition of the word, if applicable
-        self.definition = definition
+        # equivalent translation word, if available
+        self.translation = translation
 
 
     def set_lemma(self, rules):

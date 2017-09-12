@@ -8,9 +8,9 @@ Requires python 3.
 from foreigntongue import Language, get_latin, get_ipa
 
 lang = Language()
-get_latin(lang.get_word(pos='NN', english='fish'))
+get_latin(lang.get_word('NN', 'fish'))
 # 'ah'
 
-get_ipa(lang.get_word(pos='NN', english='fish'))
+get_ipa(lang.get_word('NN', 'fish'))
 # 'ɑʔ'
 ```
