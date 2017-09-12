@@ -51,6 +51,20 @@ class Tests(unittest.TestCase):
         self.assertEqual(blerk.display_pos, 'BLRK')
 
 
+    def test_phonology(self):
+        ''' sounds used in language '''
+        lang = Language()
+
+        syll = lang.syllables
+        self.assertTrue(len(syll.vowels) >= 2)
+        self.assertTrue(len(syll.consonants) >= 6)
+
+        vowel = syll.pick_vowel()
+        self.assertIn(vowel, syll.vowels)
+
+        consonant = syll.pick_consonant()
+        self.assertIn(consonant, syll.consonants)
+
 
 if __name__ == '__main__':
     unittest.main()
