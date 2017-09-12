@@ -54,8 +54,8 @@ class Tests(unittest.TestCase):
     def test_phonology(self):
         ''' sounds used in language '''
         lang = Language()
-
         syll = lang.syllables
+
         self.assertTrue(len(syll.vowels) >= 2)
         self.assertTrue(len(syll.consonants) >= 6)
 
@@ -64,6 +64,30 @@ class Tests(unittest.TestCase):
 
         consonant = syll.pick_consonant()
         self.assertIn(consonant, syll.consonants)
+
+        self.assertIsInstance(consonant, dict)
+        self.assertIn('IPA', consonant)
+        self.assertIn('latin', consonant)
+        self.assertIsInstance(consonant['IPA'], str)
+        self.assertIsInstance(consonant['latin'], str)
+
+
+    def test_syllables(self):
+        ''' sounds used in language '''
+        lang = Language()
+        syll = lang.syllables
+
+        syllable = syll.get_syllable()
+        self.assertIsInstance(syllable, list)
+        self.assertTrue(len(syllable) > 0)
+
+        self.assertIsInstance(syllable[0], dict)
+        self.assertIn('IPA', syllable[0])
+        self.assertIn('latin', syllable[0])
+        self.assertIsInstance(syllable[0]['IPA'], str)
+        self.assertIsInstance(syllable[0]['latin'], str)
+
+
 
 
 if __name__ == '__main__':
