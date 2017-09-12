@@ -7,7 +7,7 @@ class Word(object):
 
     def __init__(self, pos, syllables, translation, base_tags=None):
         self.pos = pos
-        self.display_pos = pos_lookup['LOC']
+        self.display_pos = pos_lookup[pos] if pos in pos_lookup else pos
 
         # (hopefully) unique identifier
         self.id = random.randint(100000000, 999999999)
