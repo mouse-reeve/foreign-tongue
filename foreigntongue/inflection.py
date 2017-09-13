@@ -36,7 +36,7 @@ class Rule(object):
         unmatched = [t for t in self.tags if t not in tags]
         return not len(unmatched) or not tags
 
-    def rule(self, word):
+    def rule(self, syllables):
         ''' implemented by whatever rule type '''
         raise NotImplementedError('Rule functionality must be implemented')
 

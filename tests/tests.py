@@ -113,11 +113,19 @@ class Tests(unittest.TestCase):
         self.assertNotEqual(test_word.stem, inflected)
 
 
+    def test_abstract_rule_class(self):
+        ''' rule class template for rule types '''
+        with self.assertRaises(NotImplementedError):
+            rule = Rule(['NN'])
+            rule.rule([])
+
+
     def test_affix_rule(self):
         ''' adding a syllable to the end '''
         lang = Language()
         syllable = lang.syllables.get_syllable()
         rule = Affix(['NN'], syllable)
+        self.assertIsInstance(rule, Rule)
 
         word = lang.get_word('NN', 'bip')
         inflected = rule.apply(word.stem, word.base_tags)
@@ -132,6 +140,7 @@ class Tests(unittest.TestCase):
         lang = Language()
         syllable = lang.syllables.get_syllable()
         rule = Prefix(['NN'], syllable)
+        self.assertIsInstance(rule, Rule)
 
         word = lang.get_word('NN', 'bip')
         inflected = rule.apply(word.stem, word.base_tags)
@@ -146,6 +155,7 @@ class Tests(unittest.TestCase):
         lang = Language()
         vowel = {'latin': 'ME', 'ipa': 'mua'}
         rule = StemChange(['NN'], 0, vowel)
+        self.assertIsInstance(rule, Rule)
 
         word = lang.get_word('NN', 'bip')
         inflected = rule.apply(word.stem, word.base_tags)
