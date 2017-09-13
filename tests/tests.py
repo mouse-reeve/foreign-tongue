@@ -1,5 +1,6 @@
 ''' test language creation '''
 from foreigntongue import Language, Syllables, Word#, get_latin, get_ipa
+from foreigntongue.inflection import Rule, Affix, Prefix, StemChange
 import unittest
 
 class Tests(unittest.TestCase):
@@ -11,6 +12,7 @@ class Tests(unittest.TestCase):
         self.assertIsInstance(lang, Language)
         self.assertIsInstance(lang.syllables, Syllables)
         self.assertIsInstance(lang.dictionary, dict)
+
 
     def test_create_word(self):
         ''' words are useful '''
@@ -89,6 +91,69 @@ class Tests(unittest.TestCase):
         self.assertIn('latin', syllable[0])
         self.assertIsInstance(syllable[0]['IPA'], str)
         self.assertIsInstance(syllable[0]['latin'], str)
+
+
+    def test_auto_create_rules(self):
+        ''' inflection rules '''
+        lang = Language()
+        rules = lang.rules
+
+        # there should at least be a pluralization rule
+        self.assertTrue(len(rules) > 0)
+
+        for rule in rules:
+            self.assertIsInstance(rule, Rule)
+            self.assertIsInstance(rule.tags, list)
+            self.assertTrue(len(rule.tags) > 0)
+
+        test_word = lang.get_word(rules[0].tags[0], 'test')
+
+        inflected = rules[0].apply(test_word.stem, test_word.base_tags)
+
+        self.assertNotEqual(test_word.stem, inflected)
+
+
+    def test_affix_rule(self):
+        ''' adding a syllable to the end '''
+        lang = Language()
+        syllable = lang.syllables.get_syllable()
+        rule = Affix(['NN'], syllable)
+
+        word = lang.get_word('NN', 'bip')
+        inflected = rule.apply(word.stem, word.base_tags)
+
+        self.assertEqual(len(word.stem) + 1, len(inflected))
+        self.assertEqual(word.stem, inflected[:-1])
+        self.assertEqual(inflected[-1], syllable)
+
+
+    def test_prefix_rule(self):
+        ''' adding a syllable to the start '''
+        lang = Language()
+        syllable = lang.syllables.get_syllable()
+        rule = Prefix(['NN'], syllable)
+
+        word = lang.get_word('NN', 'bip')
+        inflected = rule.apply(word.stem, word.base_tags)
+
+        self.assertEqual(len(word.stem) + 1, len(inflected))
+        self.assertEqual(word.stem, inflected[1:])
+        self.assertEqual(inflected[0], syllable)
+
+
+    def test_stem_change_rule(self):
+        ''' modify the vowel in a syllable '''
+        lang = Language()
+        vowel = {'latin': 'ME', 'ipa': 'mua'}
+        rule = StemChange(['NN'], 0, vowel)
+
+        word = lang.get_word('NN', 'bip')
+        inflected = rule.apply(word.stem, word.base_tags)
+
+        self.assertEqual(len(word.stem), len(inflected))
+        self.assertEqual(word.stem[1:], inflected[1:])
+        self.assertIn(vowel, inflected[0])
+
 
 
 if __name__ == '__main__':
