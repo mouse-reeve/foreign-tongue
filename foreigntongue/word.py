@@ -13,7 +13,7 @@ class Word(object):
         self.id = random.randint(100000000, 999999999)
 
         # grammatical tags that ALWAYS apply to this word, ie pos and gender
-        self.base_tags = [pos] + base_tags if base_tags else [pos]
+        self.base_tags = [pos] + base_tags if base_tags else []
 
         # this is the baseline list of syllables before any inflection
         self.stem = syllables
