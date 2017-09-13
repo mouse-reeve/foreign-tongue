@@ -32,7 +32,7 @@ class Tests(unittest.TestCase):
         verb_lookup = lang.get_word('VB', 'fish')
         self.assertIs(verb, verb_lookup)
 
-        self.assertIsNot(noun, verb)
+        self.assertEqual(len(lang.dictionary), 2)
 
 
     def test_pos_tags(self):
