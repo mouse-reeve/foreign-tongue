@@ -106,12 +106,6 @@ class Tests(unittest.TestCase):
             self.assertIsInstance(rule.tags, list)
             self.assertTrue(len(rule.tags) > 0)
 
-        test_word = lang.get_word(rules[0].tags[0], 'test')
-
-        inflected = rules[0].apply(test_word.stem, test_word.base_tags)
-
-        self.assertNotEqual(test_word.stem, inflected)
-
 
     def test_abstract_rule_class(self):
         ''' rule class template for rule types '''
@@ -163,7 +157,6 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(word.stem), len(inflected))
         self.assertEqual(word.stem[1:], inflected[1:])
         self.assertIn(vowel, inflected[0])
-
 
 
 if __name__ == '__main__':
