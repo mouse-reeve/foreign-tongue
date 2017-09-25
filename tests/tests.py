@@ -112,6 +112,8 @@ class Tests(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             rule = Rule(['NN'])
             self.assertIn('NN', rule.tags)
+            self.assertTrue(rule.is_tag_match(['NN']))
+            self.assertFalse(rule.is_tag_match(['NP']))
             rule.rule([])
 
 
