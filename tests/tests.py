@@ -1,5 +1,5 @@
 ''' test language creation '''
-from foreigntongue import Language, Syllables, Word#, get_latin, get_ipa
+from foreigntongue import Language, Syllables, Word
 from foreigntongue.inflection import Rule, Affix, Prefix, StemChange
 import unittest
 
@@ -111,6 +111,7 @@ class Tests(unittest.TestCase):
         ''' rule class template for rule types '''
         with self.assertRaises(NotImplementedError):
             rule = Rule(['NN'])
+            self.assertIn('NN', rule.tags)
             rule.rule([])
 
 
