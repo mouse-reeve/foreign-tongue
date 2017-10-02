@@ -16,18 +16,33 @@ class Language(object):
         # this selects phonemes and syllable formation patterns
         self.syllables = Syllables()
 
+        # -------- MORPHOLOGY
+        ''' Not going to worry about analytic/synthetic/etc terminology, instead
+        I'm going to view the mophological typology as two scales:
+
+        inflection <----- vs ---> isolation   (morpheme per word ratio)
+        agglutination <-- or ---> fusion      (feature per inflection ratio)
+        inflection: redest. Isolation: most red.
+
+        the first scale determines how many morphemes go into a word, and the
+        second determines how to combine those morphemes (if at all, of course).
+
+        This gets hard because the concept of a "word" gets mushy in translation
+        and you end up with people flipping out about someone having one hundred
+        words for snow.
+
+        So, Russian would be more inflection and fusional. The list of things it
+        codes for nouns is gender, number, and case.
+        '''
+
         # ------- WORDS FROM SYLLABLES
         ''' NOTES:
          - The idea is to produce base forms that will be modified with the
            correct endings based on part of speech
-         - This is ludicrously simplified, it doesn't consider morphology
-           at all, much less bound vs free or whatever else, and like, what
-           about agglutination or concatenation???
-         - Also doesn't consider word relationships and etymology
         '''
         self.syllable_stats = {
-            'word_syllable_mode': random.randint(1, 2),
-            'word_syllable_stdv': random.random() / 3
+            'syllables_mode': random.randint(1, 2),
+            'syllables_stdv': random.random() / 3
         }
 
 
@@ -35,7 +50,7 @@ class Language(object):
         ''' NOTES:
          - Number is, in reality, more complicated than just singular/plural,
            so a better model would maybe have buckets, or flexible benchmarks
-         - PoS uses a subset of Penn Treebank, and is very simplistic
+            See also Greenberg's 34th rule of morphology
          - Grammatical gender could also mark other characteristics like
            (in)animate, or, for that matter, any number of other offbeat things
         '''
@@ -125,8 +140,8 @@ class Language(object):
 
         # doesn't consider appropriateness of word length for the POS
         syllables = int(random.normalvariate(
-            self.syllable_stats['word_syllable_mode'],
-            self.syllable_stats['word_syllable_stdv']))
+            self.syllable_stats['syllables_mode'],
+            self.syllable_stats['syllables_stdv']))
         syllables = 1 if syllables < 1 else syllables
 
         data = [self.syllables.get_syllable() for _ in range(0, syllables)]
@@ -176,7 +191,7 @@ class Language(object):
               'Consonants:              %s\n' \
               'Ave. syllables per word: %s' %
               (len(vowels), len(consonants),
-               self.syllable_stats['word_syllable_mode']))
+               self.syllable_stats['syllables_mode']))
 
         print('\nVOWELS:')
         print(' '.join(re.sub('/', '', v['IPA']) for v in vowels))
@@ -189,6 +204,15 @@ class Language(object):
         print('\nGRAMMAR:')
         for rule in self.rules:
             print(rule.tags, rule)
+
+
+    def get_stats(self):
+        ''' json formatted info on the language '''
+        return {
+            'vowels': self.syllables.vowels,
+            'consonants': self.syllables.consonants
+            'mode_syllables': self.syllable_stats['syllables_mode'])
+        }
 
 # ------ PRINTERS
 def get_latin(word):
