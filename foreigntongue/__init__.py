@@ -210,8 +210,8 @@ class Language(object):
         ''' json formatted info on the language '''
         return {
             'vowels': self.syllables.vowels,
-            'consonants': self.syllables.consonants
-            'mode_syllables': self.syllable_stats['syllables_mode'])
+            'consonants': self.syllables.consonants,
+            'mode_syllables': self.syllable_stats['syllables_mode']
         }
 
 # ------ PRINTERS
