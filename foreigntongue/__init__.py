@@ -41,7 +41,7 @@ class Language(object):
            correct endings based on part of speech
         '''
         self.syllable_stats = {
-            'syllables_mode': random.randint(1, 2),
+            'syllables_mode': random.randint(2, 3),
             'syllables_stdv': random.random() / 3
         }
 
