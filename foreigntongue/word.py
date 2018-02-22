@@ -5,7 +5,7 @@ from foreigntongue.pos import pos_lookup
 class Word(object):
     ''' a foreign word and its metadata '''
 
-    def __init__(self, pos, syllables, translation, base_tags=None):
+    def __init__(self, pos, syllables, translation, definition=None, base_tags=None):
         self.pos = pos
         self.display_pos = pos_lookup[pos] if pos in pos_lookup else pos
 
@@ -23,6 +23,9 @@ class Word(object):
 
         # equivalent translation word, if available
         self.translation = translation
+
+        # a longer-form definition
+        self.definition = definition
 
 
     def set_lemma(self, rules):

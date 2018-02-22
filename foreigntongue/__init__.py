@@ -123,7 +123,7 @@ class Language(object):
 
 
     # -------- GENERATORS
-    def get_word(self, pos, translation):
+    def get_word(self, pos, translation, definition=None):
         ''' combine syllables into words
         NOTES:
         - some PoSs should probably prefer shorter words.
@@ -151,7 +151,8 @@ class Language(object):
             pos,
             data,
             translation,
-            base_tags=tags
+            base_tags=tags,
+            definition=definition
         )
 
         # inflect word based on its part of speech
