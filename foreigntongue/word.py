@@ -28,6 +28,10 @@ class Word(object):
         self.definition = definition
 
 
+    def set_definition(self, definition):
+        ''' allows a definition to be added after a word is created '''
+        self.definition = definition
+
     def set_lemma(self, rules):
         ''' return or create the lemma for this word '''
         self.lemma = self.inflect(rules)
